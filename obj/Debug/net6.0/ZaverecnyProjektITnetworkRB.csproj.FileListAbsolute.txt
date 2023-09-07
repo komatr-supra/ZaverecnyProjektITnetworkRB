@@ -1,0 +1,14 @@
+F:\uceni c\ZaverecnyProjektITnetworkRB\bin\Debug\net6.0\ZaverecnyProjektITnetworkRB.exe
+F:\uceni c\ZaverecnyProjektITnetworkRB\bin\Debug\net6.0\ZaverecnyProjektITnetworkRB.deps.json
+F:\uceni c\ZaverecnyProjektITnetworkRB\bin\Debug\net6.0\ZaverecnyProjektITnetworkRB.runtimeconfig.json
+F:\uceni c\ZaverecnyProjektITnetworkRB\bin\Debug\net6.0\ZaverecnyProjektITnetworkRB.dll
+F:\uceni c\ZaverecnyProjektITnetworkRB\bin\Debug\net6.0\ZaverecnyProjektITnetworkRB.pdb
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\ZaverecnyProjektITnetworkRB.GeneratedMSBuildEditorConfig.editorconfig
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\ZaverecnyProjektITnetworkRB.AssemblyInfoInputs.cache
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\ZaverecnyProjektITnetworkRB.AssemblyInfo.cs
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\ZaverecnyProjektITnetworkRB.csproj.CoreCompileInputs.cache
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\ZaverecnyProjektITnetworkRB.dll
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\refint\ZaverecnyProjektITnetworkRB.dll
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\ZaverecnyProjektITnetworkRB.pdb
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\ZaverecnyProjektITnetworkRB.genruntimeconfig.cache
+F:\uceni c\ZaverecnyProjektITnetworkRB\obj\Debug\net6.0\ref\ZaverecnyProjektITnetworkRB.dll

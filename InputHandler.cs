@@ -14,6 +14,8 @@ namespace ZaverecnyProjektITnetworkRB
 		public Action OnShowAllPolicyholders;
 		public Action OnFindPolicyholder;
 		public Action OnQuit;
+
+		private string[] commandArr = {};
 		#endregion
 
 		/// <summary>
@@ -36,7 +38,8 @@ namespace ZaverecnyProjektITnetworkRB
 				case 1: OnNewPolicyholder?.Invoke(); break;
 				case 2: OnShowAllPolicyholders?.Invoke(); break;
 				case 3: OnFindPolicyholder?.Invoke(); break;
-				case 4: OnQuit?.Invoke(); break;
+
+				case 5: OnQuit?.Invoke(); break;
 			}            
 		}
 

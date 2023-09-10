@@ -6,41 +6,49 @@ using System.Threading.Tasks;
 
 namespace ZaverecnyProjektITnetworkRB
 {
-	//data about policyholder
-	public class Policyholder
+	public struct Policyholder
 	{
-		private readonly string name;
-		public string Name { get { return name; } }
-		private readonly string surname;
-		public string Surname { get { return surname; } }
-		private readonly string telNumber;
-		private readonly int age;
-		private readonly Sex sex;
+		public string Name { get; private set; }
+		public string Surname { get; private set; }
+		public string TelNumber { get; private set; }
+
+		public int Age { get; private set; }
+		public Sex Gender { get; private set; }
 
 		public Policyholder(string name, string surname, string telNumber,  int age, Sex sex)
 		{
-			this.name = name;
-			this.surname = surname;
-			this.telNumber = telNumber;
-			this.age = age;
-			this.sex = sex;
+			this.Name = name;
+			this.Surname = surname;
+			this.TelNumber = telNumber;
+			this.Age = age;
+			this.Gender = sex;
 		}
 
 		public override string ToString()
 		{
-			return string.Format("{0,-12} {1,-12} {2,-5} {3,-15}", name, surname, age, telNumber);
+			return string.Format("{0,-12} {1,-12} {2,-5} {3,-15} {4, -10}", Name, Surname, Age, TelNumber, Gender);
 		}
 
-		public override bool Equals(object? obj)
+		public override bool Equals(object obj)
 		{
-			if (obj == null || obj.GetType() != GetType()) return false;
+			if (obj == null || obj is not Policyholder) return false;
 
-			Policyholder otherPolicyholder = obj as Policyholder;
-			if (this.name != otherPolicyholder.Name || this.surname != otherPolicyholder.Surname || this.age != otherPolicyholder.age) return false;
+			Policyholder otherPolicyholder = (Policyholder)obj;
+			return this.Name == otherPolicyholder.Name && this.Surname == otherPolicyholder.Surname && this.Age == otherPolicyholder.age;
 
-			return true;
 		}
-		
+		public override int GetHashCode()
+		{
+			int hashCode = 17;
+
+			hashCode = hashCode * 23 + (Name != null ? Name.GetHashCode() : 0);
+			hashCode = hashCode * 23 + (Surname != null ? Surname.GetHashCode() : 0);
+			hashCode = hashCode * 23 + (TelNumber != null ? TelNumber.GetHashCode() : 0);
+			hashCode = hashCode * 23 + Age.GetHashCode();
+			hashCode = hashCode * 23 + Gender.GetHashCode();
+
+			return hashCode;
+		}
 		public enum Sex { MALE, FEMALE}
 	}
 }

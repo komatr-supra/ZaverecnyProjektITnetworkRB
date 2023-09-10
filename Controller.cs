@@ -9,34 +9,33 @@ namespace ZaverecnyProjektITnetworkRB
 	//control flow of the program
 	internal class Controller
 	{
-		private readonly InputHandler inputHandler;
-		private readonly IDataProvider dataManager;
-
+		private readonly InputHandler _inputHandler;
+		private readonly IDataProvider _dataManager;
 		public Controller(IDataProvider dataManager)
 		{
-			this.dataManager = dataManager;
-			inputHandler = new InputHandler();
+			this._dataManager = dataManager;
+			_inputHandler = new InputHandler();
 
-			inputHandler.OnQuit = ()=> { Environment.Exit(0); };
-			inputHandler.OnFindPolicyholder = () => { FindPolicyholderByName(false); };
-			inputHandler.OnNewPolicyholder = () => { AddNewInsurance(); };
-			inputHandler.OnShowAllPolicyholders = () => { ShowAllPolicyholders(); };
+			_inputHandler.OnQuit = ()=> { Environment.Exit(0); };
+			_inputHandler.OnFindPolicyholder = () => { FindPolicyholderByName(false); };
+			_inputHandler.OnNewPolicyholder = () => { AddNewInsurance(); };
+			_inputHandler.OnShowAllPolicyholders = () => { ShowAllPolicyholders(); };
 		}
 
-		public void Loop() => inputHandler.ProceedCommand();
+		public void Loop() => _inputHandler.ProceedCommand();
 
-		private void ShowAllPolicyholders() => dataManager.GetPolicies().ForEach(policy => { Console.WriteLine(policy); });
+		private void ShowAllPolicyholders() => _dataManager.GetPolicies().ForEach(policy => { Console.WriteLine(policy); });
 		
 		private void FindPolicyholderByName(bool remove)
 		{
             Console.WriteLine("Name");
-			string name = inputHandler.GetInputText();
+			string name = _inputHandler.GetInputText();
             Console.WriteLine("Surname");
-			string surname = inputHandler.GetInputText();
-			if (!dataManager.TryFindPolicyholderByName(name, surname, out Policyholder policyholder)) Console.WriteLine("NO RECORD");
+			string surname = _inputHandler.GetInputText();
+			if (!_dataManager.TryFindPolicyholderByName(name, surname, out Policyholder policyholder)) Console.WriteLine("NO RECORD");
 			if(remove)
 			{
-				dataManager.RemovePolicy(policyholder);
+				_dataManager.RemovePolicy(policyholder);
 				Console.WriteLine("Policyholder was removed");
 				return;
 			}
@@ -47,34 +46,35 @@ namespace ZaverecnyProjektITnetworkRB
 		private void AddNewInsurance()
 		{
             Console.WriteLine("Name of new policyholder");
-            string name = inputHandler.GetInputText();
+            string name = _inputHandler.GetInputText();
 
 			Console.WriteLine("Surname of new policyholder");
-			string surname = inputHandler.GetInputText();
+			string surname = _inputHandler.GetInputText();
 
 			Console.WriteLine("Telephone number");
 			string telNumber;
-            while (!TestTelephoneNumber(inputHandler.GetInputText(), out telNumber))
+            while (!TestTelephoneNumber(_inputHandler.GetInputText(), out telNumber))
             {
                 Console.WriteLine("Phone number is wrong. Type a real one.");
             }
 
             Console.WriteLine("Age");
 			int age;
-            while (!int.TryParse(inputHandler.GetInputText(), out age) || age < 0 || age > 120)
+            while (!int.TryParse(_inputHandler.GetInputText(), out age) || age < 0 || age > 120)
             {
                 Console.WriteLine("This is not a valid age! Wrote a valid one.");
             }
 
-			Policyholder.Sex sex;
-            Console.WriteLine("Sex (1 - male, 2 - female)");
-			while (!int.TryParse(inputHandler.GetInputText(), out age) || age < 0 || age > 120)
+			string sexString;
+			Console.WriteLine("Sex (male, female)");
+			while ((sexString = _inputHandler.GetInputText().ToLower()) != "male" || sexString != "female")
 			{
-				Console.WriteLine("This is not a valid age! Wrote a valid one.");
+				Console.WriteLine("This is not a valid sex! Wrote a valid one.");
 			}
+			Policyholder.Sex sex = sexString == "male" ? Policyholder.Sex.MALE : Policyholder.Sex.FEMALE;
 
 			Policyholder policyholder = new Policyholder(name, surname, telNumber, age, sex);
-			dataManager.AddPolicy(policyholder);
+			_dataManager.AddPolicy(policyholder);
             Console.WriteLine("New policyholder saved");
         }		
 

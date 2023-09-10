@@ -15,7 +15,7 @@ namespace ZaverecnyProjektITnetworkRB
 		public Action OnFindPolicyholder;
 		public Action OnQuit;
 
-		private string[] commandArr = {};
+		
 		#endregion
 
 		/// <summary>

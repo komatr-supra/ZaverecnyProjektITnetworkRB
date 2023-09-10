@@ -10,7 +10,7 @@ namespace ZaverecnyProjektITnetworkRB
 	{
 		void AddPolicy(Policyholder policy);
 		void RemovePolicy(Policyholder policy);
-		List<Policyholder> GetPolicies();
+		IEnumerable<string> GetPolicies();
 		bool TryFindPolicyholderByName(string policyName, string policySurname, out Policyholder policyholder);
 	}
 }

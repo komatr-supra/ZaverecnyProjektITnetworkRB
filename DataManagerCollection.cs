@@ -20,9 +20,12 @@ namespace ZaverecnyProjektITnetworkRB
 		{
 			_policies.Remove(policy);
 		}
-		public List<Policyholder> GetPolicies()
+		public IEnumerable<string> GetPolicies()
 		{
-			return _policies;
+            foreach (var item in _policies)
+            {
+                yield return item.ToString();
+            }
 		}
 		/// <summary>
 		/// find policyholder in collection
@@ -33,7 +36,7 @@ namespace ZaverecnyProjektITnetworkRB
 		/// <returns>true if policyholder was found</returns>
 		public bool TryFindPolicyholderByName(string policyName, string policySurname, out Policyholder policyholder)
 		{
-			policyholder = null;
+			
 			foreach (Policyholder policy in _policies)
 			{
 				if(policy.Name == policyName && policy.Surname == policySurname)
@@ -42,6 +45,7 @@ namespace ZaverecnyProjektITnetworkRB
 					return true;
 				}
 			}
+			policyholder = default;
 			return false;
 		}
 	}

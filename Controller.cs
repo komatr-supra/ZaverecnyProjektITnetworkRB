@@ -20,6 +20,7 @@ namespace ZaverecnyProjektITnetworkRB
 			_inputHandler.OnFindPolicyholder = () => { FindPolicyholderByName(false); };
 			_inputHandler.OnNewPolicyholder = () => { AddNewInsurance(); };
 			_inputHandler.OnShowAllPolicyholders = () => { ShowAllPolicyholders(); };
+			_inputHandler.OnRemovePolicyholder = () => { FindPolicyholderByName(true); };
 		}
 
 		public void Loop() => _inputHandler.ProceedCommand();
@@ -27,7 +28,9 @@ namespace ZaverecnyProjektITnetworkRB
 		private void ShowAllPolicyholders()
 		{
 			var policyholder = _dataManager.GetPolicies().ToArray();//ForEach(policy => { Console.WriteLine(policy); });
-            foreach (var policy in policyholder)
+			Console.WriteLine(string.Format("{0,-12} {1,-12} {2,-5} {3,-15} {4, -10}", "Name", "Surname", "Age", "TelNumber", "Gender"));
+
+			foreach (var policy in policyholder)
             {
 				Console.WriteLine(policy);
 			}
@@ -109,5 +112,6 @@ namespace ZaverecnyProjektITnetworkRB
 
 			bool IsANumber(char character) => character >= '0' && character <= '9';
         }
+		
 	}
 }

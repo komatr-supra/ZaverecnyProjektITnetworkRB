@@ -37,7 +37,7 @@ namespace ZaverecnyProjektITnetworkRB
 													
 				int changedRowCount = command.ExecuteNonQuery();
 				if(changedRowCount == 0) Console.WriteLine("Writing to database FAILED!");
-				else Console.WriteLine("Saved");
+				//else Console.WriteLine("Saved");
             }
 		}
 
@@ -56,7 +56,7 @@ namespace ZaverecnyProjektITnetworkRB
 					while (reader.Read())
 					{
 						//pass index 0 -> its ID... dont care
-						yield return string.Format("{0,-12} {1,-12} {2,-5} {3,-15} {4, -10}", reader[1], reader[2], reader[3], reader[4], reader[5]);
+						yield return string.Format("{0,-12} {1,-12} {2,-5} {3,-15} {4, -10}", reader[1], reader[2], reader[3], reader[4], (Policyholder.Sex)(byte)reader[5]);
 					}
 				}
 			}
@@ -67,13 +67,15 @@ namespace ZaverecnyProjektITnetworkRB
 			{
 				connection.Open();
 
-				SqlCommand commandRecordCounts = new SqlCommand();
-				commandRecordCounts.Connection = connection;
-				commandRecordCounts.CommandText = $"delete from [Policyholder] where{policy.Name} = [name], {policy.Surname} = [surname], {policy.Age} = [age], {policy.TelNumber} = [telephone number], {(int)policy.Gender} = [gender])";
+				SqlCommand command = new SqlCommand();
+				command.Connection = connection;
+				command.Parameters.AddWithValue("@Name", policy.Name);
+				command.Parameters.AddWithValue("@Surname", policy.Surname);
+				command.CommandText = $"delete from [Policyholder] where @Name = [name] and @surname = [surname]";
 
-				int changedRowCount = commandRecordCounts.ExecuteNonQuery();
+				int changedRowCount = command.ExecuteNonQuery();
 				if (changedRowCount == 0) Console.WriteLine("Writing to database FAILED!");
-				else Console.WriteLine("deleted");
+				//else Console.WriteLine("deleted");
 			}
 		}
 
@@ -83,14 +85,16 @@ namespace ZaverecnyProjektITnetworkRB
 			{
 				connection.Open();
 
-				SqlCommand commandRecordCounts = new SqlCommand();
-				commandRecordCounts.Connection = connection;
-				commandRecordCounts.CommandText = $"select from [Policyholder] where{policyName} = [name], {policySurname} = [surname]";
+				SqlCommand command = new SqlCommand();
+				command.Connection = connection;
+				command.Parameters.AddWithValue("@Name", policyName);
+				command.Parameters.AddWithValue("@Surname", policySurname);
+				command.CommandText = $"select * from [Policyholder] where @Name = [name] and @Surname = [surname]";
 
-				var reader = commandRecordCounts.ExecuteReader();
+				var reader = command.ExecuteReader();
 				if (reader.Read())
 				{
-					policyholder = new Policyholder(reader[1].ToString(), reader[2].ToString(), reader[3].ToString(), (int)reader[4], (Policyholder.Sex)reader[5]);
+					policyholder = new Policyholder(reader[1].ToString(), reader[2].ToString(), reader[4].ToString(), (byte)reader[3], (Policyholder.Sex)(byte)reader[5]);
 					return true;
 				}
 				policyholder = default;

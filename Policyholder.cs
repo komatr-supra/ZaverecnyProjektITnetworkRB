@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +50,6 @@ namespace ZaverecnyProjektITnetworkRB
 
 			return hashCode;
 		}
-		public enum Sex { MALE, FEMALE}
+		public enum Sex { [Description("Male")] MALE, [Description("Female")] FEMALE }
 	}
 }

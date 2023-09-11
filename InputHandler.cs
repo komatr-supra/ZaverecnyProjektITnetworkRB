@@ -13,7 +13,10 @@ namespace ZaverecnyProjektITnetworkRB
 		public Action OnNewPolicyholder;
 		public Action OnShowAllPolicyholders;
 		public Action OnFindPolicyholder;
+		public Action OnRemovePolicyholder;
 		public Action OnQuit;
+
+		private readonly string[] commands = { "add a new policyholder", "show all policyholders", "find a policyholder", "remove a policyholder", "exit" };
 		#endregion
 
 		/// <summary>
@@ -36,7 +39,8 @@ namespace ZaverecnyProjektITnetworkRB
 				case 1: OnNewPolicyholder?.Invoke(); break;
 				case 2: OnShowAllPolicyholders?.Invoke(); break;
 				case 3: OnFindPolicyholder?.Invoke(); break;
-				case 4: OnQuit?.Invoke(); break;
+				case 4: OnRemovePolicyholder?.Invoke(); break;
+				case 5: OnQuit?.Invoke(); break;
 			}            
 		}
 
@@ -46,10 +50,11 @@ namespace ZaverecnyProjektITnetworkRB
 		{
 			//empty line is for visual separation in command line
             Console.WriteLine();
-            Console.WriteLine("1 - add a new policyholder");
-            Console.WriteLine("2 - show all policyholders");
-            Console.WriteLine("3 - find a policyholder");
-            Console.WriteLine("4 - exit");
+            for (int i = 0; i < commands.Length; i++)
+            {
+                Console.WriteLine($"{i + 1} - {commands[i]}");
+            }
+            Console.Write("Command: ");
 		}
 
 		/// <summary>
@@ -61,7 +66,7 @@ namespace ZaverecnyProjektITnetworkRB
 		private bool TryCommand(string commandString, out int commandNumber)
 		{
 			commandNumber = 0;
-			if(int.TryParse(commandString, out commandNumber) && commandNumber > 0 && commandNumber <= 4) return true;
+			if(int.TryParse(commandString, out commandNumber) && commandNumber > 0 && commandNumber <= commands.Length) return true;
 			return false;
 		}
 	}

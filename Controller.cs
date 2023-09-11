@@ -9,59 +9,84 @@ namespace ZaverecnyProjektITnetworkRB
 	//control flow of the program
 	internal class Controller
 	{
-		private readonly InputHandler inputHandler;
-		private readonly DataManager dataManager;
-
-		public Controller(DataManager dataManager)
+		private readonly InputHandler _inputHandler;
+		private readonly IDataProvider _dataManager;
+		public Controller(IDataProvider dataManager)
 		{
-			this.dataManager = dataManager;
-			inputHandler = new InputHandler();
+			this._dataManager = dataManager;
+			_inputHandler = new InputHandler();
 
-			inputHandler.OnQuit = ()=> { Environment.Exit(0); };
-			inputHandler.OnFindPolicyholder = () => { FindPolicyholderByName(); };
-			inputHandler.OnNewPolicyholder = () => { AddNewInsurance(); };
-			inputHandler.OnShowAllPolicyholders = () => { ShowAllPolicyholders(); };
+			_inputHandler.OnQuit = ()=> { Environment.Exit(0); };
+			_inputHandler.OnFindPolicyholder = () => { FindPolicyholderByName(false); };
+			_inputHandler.OnNewPolicyholder = () => { AddNewInsurance(); };
+			_inputHandler.OnShowAllPolicyholders = () => { ShowAllPolicyholders(); };
+			_inputHandler.OnRemovePolicyholder = () => { FindPolicyholderByName(true); };
 		}
 
-		public void Loop() => inputHandler.ProceedCommand();
+		public void Loop() => _inputHandler.ProceedCommand();
 
-		private void ShowAllPolicyholders() => dataManager.GetPolicies().ForEach(policy => { Console.WriteLine(policy); });
+		private void ShowAllPolicyholders()
+		{
+			var policyholder = _dataManager.GetPolicies().ToArray();//ForEach(policy => { Console.WriteLine(policy); });
+			Console.WriteLine(string.Format("{0,-12} {1,-12} {2,-5} {3,-15} {4, -10}", "Name", "Surname", "Age", "TelNumber", "Gender"));
+
+			foreach (var policy in policyholder)
+            {
+				Console.WriteLine(policy);
+			}
+        }
 		
-		private void FindPolicyholderByName()
+		private void FindPolicyholderByName(bool remove)
 		{
             Console.WriteLine("Name");
-			string name = inputHandler.GetInputText();
+			string name = _inputHandler.GetInputText();
             Console.WriteLine("Surname");
-			string surname = inputHandler.GetInputText();
-
-			if (dataManager.TryFindPolicyholderByName(name, surname, out Policyholder policyholder)) Console.WriteLine(policyholder);
-			else Console.WriteLine("NO RECORD");
+			string surname = _inputHandler.GetInputText();
+			if (!_dataManager.TryFindPolicyholderByName(name, surname, out Policyholder policyholder)) Console.WriteLine("NO RECORD");
+			if(remove)
+			{
+				_dataManager.RemovePolicy(policyholder);
+				Console.WriteLine("Policyholder was removed");
+				return;
+			}
+			Console.WriteLine(policyholder);
+			
         }
 
 		private void AddNewInsurance()
 		{
             Console.WriteLine("Name of new policyholder");
-            string name = inputHandler.GetInputText();
+            string name = _inputHandler.GetInputText();
 
 			Console.WriteLine("Surname of new policyholder");
-			string surname = inputHandler.GetInputText();
+			string surname = _inputHandler.GetInputText();
 
 			Console.WriteLine("Telephone number");
 			string telNumber;
-            while (!TestTelephoneNumber(inputHandler.GetInputText(), out telNumber))
+            while (!TestTelephoneNumber(_inputHandler.GetInputText(), out telNumber))
             {
                 Console.WriteLine("Phone number is wrong. Type a real one.");
             }
 
             Console.WriteLine("Age");
 			int age;
-            while (!int.TryParse(inputHandler.GetInputText(), out age) || age < 0 || age > 120)
+            while (!int.TryParse(_inputHandler.GetInputText(), out age) || age < 0 || age > 120)
             {
                 Console.WriteLine("This is not a valid age! Wrote a valid one.");
             }
 
-			Policyholder policyholder = new Policyholder(name, surname, telNumber, age);
-			dataManager.AddPolicy(policyholder);
+			string sexString;
+			Console.WriteLine("Sex (male, female)");
+			sexString = _inputHandler.GetInputText().Trim().ToLower();
+			while (!(sexString == "male") && !(sexString == "female"))
+			{
+				Console.WriteLine("This is not a valid sex! Wrote a valid one.");
+				sexString = _inputHandler.GetInputText().ToLower();
+			}
+			Policyholder.Sex sex = sexString == "male" ? Policyholder.Sex.MALE : Policyholder.Sex.FEMALE;
+
+			Policyholder policyholder = new Policyholder(name, surname, telNumber, age, sex);
+			_dataManager.AddPolicy(policyholder);
             Console.WriteLine("New policyholder saved");
         }		
 
@@ -87,5 +112,6 @@ namespace ZaverecnyProjektITnetworkRB
 
 			bool IsANumber(char character) => character >= '0' && character <= '9';
         }
+		
 	}
 }

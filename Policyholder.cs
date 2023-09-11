@@ -34,7 +34,7 @@ namespace ZaverecnyProjektITnetworkRB
 			if (obj == null || obj is not Policyholder) return false;
 
 			Policyholder otherPolicyholder = (Policyholder)obj;
-			return this.Name == otherPolicyholder.Name && this.Surname == otherPolicyholder.Surname && this.Age == otherPolicyholder.age;
+			return this.Name == otherPolicyholder.Name && this.Surname == otherPolicyholder.Surname && this.Age == otherPolicyholder.Age;
 
 		}
 		public override int GetHashCode()

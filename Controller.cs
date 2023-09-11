@@ -24,7 +24,14 @@ namespace ZaverecnyProjektITnetworkRB
 
 		public void Loop() => _inputHandler.ProceedCommand();
 
-		private void ShowAllPolicyholders() => _dataManager.GetPolicies().ForEach(policy => { Console.WriteLine(policy); });
+		private void ShowAllPolicyholders()
+		{
+			var policyholder = _dataManager.GetPolicies().ToArray();//ForEach(policy => { Console.WriteLine(policy); });
+            foreach (var policy in policyholder)
+            {
+				Console.WriteLine(policy);
+			}
+        }
 		
 		private void FindPolicyholderByName(bool remove)
 		{
@@ -67,9 +74,11 @@ namespace ZaverecnyProjektITnetworkRB
 
 			string sexString;
 			Console.WriteLine("Sex (male, female)");
-			while ((sexString = _inputHandler.GetInputText().ToLower()) != "male" || sexString != "female")
+			sexString = _inputHandler.GetInputText().Trim().ToLower();
+			while (!(sexString == "male") && !(sexString == "female"))
 			{
 				Console.WriteLine("This is not a valid sex! Wrote a valid one.");
+				sexString = _inputHandler.GetInputText().ToLower();
 			}
 			Policyholder.Sex sex = sexString == "male" ? Policyholder.Sex.MALE : Policyholder.Sex.FEMALE;
 

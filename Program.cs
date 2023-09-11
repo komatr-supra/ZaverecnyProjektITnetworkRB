@@ -4,7 +4,7 @@
 	{
 		static void Main(string[] args)
 		{
-			IDataProvider dataManager = new DataManagerCollection();
+			IDataProvider dataManager = new DataManagerDatabase();//new DataManagerCollection();
 			Controller controller = new Controller(dataManager);
 			Console.WriteLine("Register of insured persons");
 			while (true)

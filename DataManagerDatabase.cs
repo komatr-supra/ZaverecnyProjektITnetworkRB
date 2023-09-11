@@ -26,11 +26,16 @@ namespace ZaverecnyProjektITnetworkRB
 			{
 				connection.Open();
 
-				SqlCommand commandRecordCounts = new SqlCommand();
-				commandRecordCounts.Connection = connection;
-				commandRecordCounts.CommandText = $"insert into [Policyholder] values({policy.Name}, {policy.Surname}, {policy.Age}, {policy.TelNumber}, {(int)policy.Gender})";
+				SqlCommand command = new SqlCommand();
+				command.Connection = connection;
+				command.Parameters.AddWithValue("@Name", policy.Name);
+				command.Parameters.AddWithValue("@Surname", policy.Surname);
+				command.Parameters.AddWithValue("@Age", policy.Age);
+				command.Parameters.AddWithValue("@TelNumber", policy.TelNumber);
+				command.Parameters.AddWithValue("@Gender", (int)policy.Gender);
+				command.CommandText = $"insert into [Policyholder]([name], [surname], [age], [telephone number], [gender]) values(@Name, @surname, @Age, @TelNumber, @Gender)";
 													
-				int changedRowCount = commandRecordCounts.ExecuteNonQuery();
+				int changedRowCount = command.ExecuteNonQuery();
 				if(changedRowCount == 0) Console.WriteLine("Writing to database FAILED!");
 				else Console.WriteLine("Saved");
             }
@@ -74,7 +79,23 @@ namespace ZaverecnyProjektITnetworkRB
 
 		public bool TryFindPolicyholderByName(string policyName, string policySurname, out Policyholder policyholder)
 		{
-			
+			using (SqlConnection connection = new(connectionString))
+			{
+				connection.Open();
+
+				SqlCommand commandRecordCounts = new SqlCommand();
+				commandRecordCounts.Connection = connection;
+				commandRecordCounts.CommandText = $"select from [Policyholder] where{policyName} = [name], {policySurname} = [surname]";
+
+				var reader = commandRecordCounts.ExecuteReader();
+				if (reader.Read())
+				{
+					policyholder = new Policyholder(reader[1].ToString(), reader[2].ToString(), reader[3].ToString(), (int)reader[4], (Policyholder.Sex)reader[5]);
+					return true;
+				}
+				policyholder = default;
+				return false;
+			}
 		}
 	}
 }
